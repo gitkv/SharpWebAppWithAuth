@@ -9,6 +9,7 @@ using WebAppWithAuth.Models;
 
 namespace WebAppWithAuth.Controllers
 {
+    [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
