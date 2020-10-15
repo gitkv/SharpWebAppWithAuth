@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebAppWithAuth.Infrastructure.Services.Email;
+using WebAppWithAuth.Models.WeatherForecast.Clients;
+using WebAppWithAuth.Models.WeatherForecast.Clients.Yandex;
 
 namespace WebAppWithAuth
 {
@@ -31,6 +33,7 @@ namespace WebAppWithAuth
             services.AddControllersWithViews(options => options.EnableEndpointRouting = false);
             services.AddRazorPages();
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddSingleton<IWeatherForecastHttpClient, YandexWeatherForecastClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
