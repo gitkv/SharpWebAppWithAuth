@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using WebAppWithAuth.Models.WeatherForecast.Clients;
+using WebAppWithAuth.Models.WeatherForecast.Enum;
 
 namespace WebAppWithAuth.Areas.Identity.Pages.Account
 {
@@ -23,17 +25,21 @@ namespace WebAppWithAuth.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IWeatherForecastHttpClient _weatherForecastHttpClient;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IWeatherForecastHttpClient weatherForecastHttpClient
+        )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _weatherForecastHttpClient = weatherForecastHttpClient;
         }
 
         [BindProperty]
@@ -88,8 +94,11 @@ namespace WebAppWithAuth.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
+                    var weatherForecast = await _weatherForecastHttpClient.getWeatherByCity(WeatherCitiesEnum.Moskow);
+
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.<br>" +
+                        $"Current weather in {weatherForecast.city}: {weatherForecast.temperature}\u2103");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
