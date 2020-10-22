@@ -2,9 +2,9 @@ namespace WebAppWithAuth.Models.WeatherForecast.Entity
 {
     public class CityCoordinates
     {
-        public string city { get; private set; }
-        public double lat { get; private set;  }
-        public double lon { get; private set;  }
+        public string city { get; }
+        public double lat { get; }
+        public double lon { get; }
 
         public CityCoordinates(string city, double lat, double lon)
         {
