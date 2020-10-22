@@ -2,8 +2,8 @@ namespace WebAppWithAuth.Models.WeatherForecast.Entity
 {
     public class WeatherForecast
     {
-        private string city { get; }
-        private double temperature { get; }
+        public string city { get; }
+        public double temperature { get; }
         
         public WeatherForecast(string city, double temperature)
         {
